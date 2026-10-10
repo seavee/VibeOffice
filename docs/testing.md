@@ -6,6 +6,10 @@
 
 Every response carries `Cache-Control: no-store`, so edited HTML and scripts are always re-fetched. Serve rather than open from disk: a `file://` page cannot fetch the proofing dictionaries, and password-protected files need WebCrypto, which wants https or localhost.
 
+## Publishing
+
+Vercel serves the static site. `vercel.json` runs `python3 tools/vercel_export.py`, which copies `public/` to `dist/` and stamps `VO.VERSION`. Connect the GitHub repository in Vercel; the framework, install command and output directory are already set. Only `dist/` is published. Directory URLs keep a trailing slash (`/quire/`, `/ledger/`, `/lectern/`) so the apps' relative script paths resolve. `sw.js` is revalidated on each load, and `manifest.webmanifest` is served as `application/manifest+json`.
+
 ## Screenshots and console errors: tools/shot.mjs
 
 Drives a page in the Chromium listening on CDP 127.0.0.1:9222 (start one with `chromium --remote-debugging-port=9222 --remote-allow-origins=*`, or `--headless=new` on a machine without a display). It starts `tools/serve.py` if nothing listens on :8760.
